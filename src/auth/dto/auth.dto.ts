@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
 
 export class AuthDto{
     @IsNotEmpty()
@@ -14,8 +14,8 @@ export class SessionAuthDto{
 
 export class AddUserDto{
     @IsNotEmpty()
-    @IsString()
-    full_name: string
+    @IsObject()
+    full_name: object
 
     @IsNotEmpty()
     @IsString()

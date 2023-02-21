@@ -10,10 +10,4 @@ export class AccountController {
         const result = await this.accountService.getAccountDetails();
         return {data : result, message: 'Account details found successfully.'}
     }
-
-    @Post('created-list/:account_id')
-    async getCreatedList(@Param('account_id') account_id: number){
-        const result = await this.accountService.getCreatedList(account_id);
-        return {data : result, message: 'Account created list found successfully.'}
-    }
 }

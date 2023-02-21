@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
-import { User, UserDocument } from 'src/schemas/user/user.schema';
+import { User, UserDocument } from '../schemas/user/user.schema';
 import { AddUserDto, AuthDto, LoginDto, SessionAuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 @Injectable()
@@ -110,12 +110,11 @@ export class AuthService {
         } 
         const hash = await bcrypt.hash(user.password, 10);
         user.password = hash;
-        const addData = await this.userModel.create(user);
         
         const request_token = await this.getRequestToken();
         console.log(request_token);
         if(request_token.success === true){
-    
+            const addData = await this.userModel.create(user);
             return {userData: addData, requestToken: request_token};
         }else{
             throw new BadRequestException('Sorry! Something went wrong')
@@ -140,20 +139,32 @@ export class AuthService {
     }
 
     async login(user: LoginDto){
+
         const emailExist = await this.checkUniqueEmail(user.email);
-        const userdata = await this.userModel.findOne({email: user.email});
-        const comparePassword = await bcrypt.compare(user.password, userdata.password);
 
         if(!emailExist){
             throw new UnauthorizedException(`${user.email} - email address does not exists.`);
         }
+
+        const userdata = await this.userModel.findOne({email: user.email});
+
+        const comparePassword = await bcrypt.compare(user.password, userdata.password);
 
         if(!comparePassword){
             throw new UnauthorizedException(`Password does not match. Please provide valid password.`)
         }
 
         const sessionData = await this.createSession(user as any)
-        // console.log(sessionData);
+       
+        const updateSession = await this.userModel.findById(userdata.id);
+        updateSession.session_id = sessionData.session_id;
+        await updateSession.save();
+
         return {userData: userdata, session_id: sessionData.session_id};
+    }
+
+    async getUserProfile(session_id: string){
+        const user = await this.userModel.find({ session_id: session_id})
+        return user;
     }
 }

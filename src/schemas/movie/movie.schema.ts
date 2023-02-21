@@ -21,9 +21,6 @@ export class Movie{
     homepage: string;
 
     @Prop()
-    movie_id: number;
-
-    @Prop()
     imdb_id: string;
 
     @Prop()
@@ -46,7 +43,6 @@ export class Movie{
 
     @Prop()
     release_date: string;
-
 
     @Prop()
     revenue: number;
@@ -74,6 +70,21 @@ export class Movie{
 
     @Prop()
     vote_count: number;
+
+    @Prop()
+    movie_id: number;
+
+    @Prop()
+    list_id: number;
+
+    @Prop({default: 'unfavorite'})
+    favorite: string;
+
+    @Prop({default: 'no_watchlist_item'})
+    watchlist: string;
+
+    @Prop()
+    rating: number
 }
   
 

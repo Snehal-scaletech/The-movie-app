@@ -31,6 +31,9 @@ export class Lists{
 
     @Prop()
     poster_path: string;
+
+    @Prop({required:true})
+    session_id: string;
 }
   
 

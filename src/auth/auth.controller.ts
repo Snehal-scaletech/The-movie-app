@@ -9,7 +9,7 @@ export class AuthController {
     @Post('register')
     async addUser(@Body() addUser: AddUserDto){
         const result = await this.authService.addUser(addUser);
-        return {data: result, message: 'User registration done successfully.'}
+        return {data: result, message: 'User registration done successfully.Please click on the "approved_url" and approve your app through website.'}
     }
 
     @Post('login')
@@ -46,5 +46,11 @@ export class AuthController {
     async getRatedMovie(@Param('guest_session_id') guest_session_id : string){
         const result = await this.authService.getRatedMovie(guest_session_id);
         return {data: result, message: 'Rated movie found successfully.'}
+    }
+
+    @Get('user-profile/:session_id')
+    async getUserProfile(@Param('session_id') session_id: string){
+        const result = await this.authService.getUserProfile(session_id);
+        return {data: result, message: 'User profile found successfully.'}
     }
 }

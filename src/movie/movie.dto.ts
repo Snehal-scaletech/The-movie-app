@@ -54,3 +54,31 @@ export class SearchMovieDto{
     primary_release_year: number;
 
 }
+
+export class FavoriteMovieDto{
+    @IsString()
+    @IsNotEmpty()
+    media_type: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    media_id: number;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    favorite: boolean;
+}
+
+export class WatchlistMovieDto{
+    @IsString()
+    @IsNotEmpty()
+    media_type: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    media_id: number;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    watchlist: boolean;
+}
